@@ -1,6 +1,6 @@
 import {Router, Request, Response} from 'express';
 import {FeedItem} from '../models/FeedItem';
-import {requireAuth} from '../../users/routes/auth.router';
+import {requireAuth} from '../../shared/auth.checker';
 import * as AWS from '../../../../aws';
 import {isNumeric} from 'validator';
 
@@ -20,8 +20,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/:id', async (req: Request, res: Response) => {
   const {id} = req.params;
   if (!id) {
-    res
-        .status(400)
+    res.status(400)
         .send('The feed id is required.');
   }
 
@@ -31,13 +30,11 @@ router.get('/:id', async (req: Request, res: Response) => {
       res.status(200)
           .send(feedItem);
     } else {
-      res
-          .status(404)
+      res.status(404)
           .send(`Feet with id ${id} not found.`);
     }
   } catch (err) {
-    res
-        .status(404)
+    res.status(404)
         .send(`Feet with id ${id} not found.`);
   }
 });
@@ -46,20 +43,17 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
   const {id} = req.params;
   if (!id || !isNumeric(id)) {
-    res
-        .status(400)
+    res.status(400)
         .send('The feet id is a number required.');
   }
 
   const {caption, url} = req.body;
   if (!caption) {
-    res
-        .status(400)
+    res.status(400)
         .send('The caption is required.');
   }
   if (!url) {
-    res
-        .status(400)
+    res.status(400)
         .send('The caption is required.');
   }
 
@@ -70,17 +64,14 @@ router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
       feedItem.caption = caption;
       feedItem.url = url;
       await feedItem.save();
-      res
-          .status(200)
+      res.status(200)
           .send('The feed item was updated.');
     } else {
-      res
-          .status(404)
+      res.status(404)
           .send(`The feed item with id ${id} not found`);
     }
   } catch (err) {
-    res
-        .status(500)
+    res.status(500)
         .send(`Internal Server Error updating the feed item with id ${id}
       Error: ${err}`);
   }
