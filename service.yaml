@@ -1,0 +1,13 @@
+apiVersion: v1
+
+kind: Service
+metadata:
+  name: feed-svc
+  labels:
+    run: feed-svc
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    run: feed-svc
