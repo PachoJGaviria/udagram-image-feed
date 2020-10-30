@@ -3,7 +3,6 @@ import {config} from './config/config';
 
 const signedUrlExpireSeconds = 150; // 5 min
 
-// Configure AWS TODO K8 DELETE THE IF?
 if (config.aws.aws_profile === 'DOCKER') {
   const credentials = new AWS.Credentials(config.aws.aws_access_key, config.aws.aws_access_secret);
   AWS.config.credentials = credentials;
