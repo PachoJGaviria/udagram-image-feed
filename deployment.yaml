@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: feed-svc
+  labels:
+    app: feed-svc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: feed-svc
+  template:
+    metadata:
+      labels:
+        app: feed-svc
+    spec:
+      containers:
+      - name: udagram-image-feed
+        image: fgaviria/udagram-image-feed:latest
+        imagePullPolicy: Always
+        ports:
+        - protocol: TCP
+          containerPort: 3000
+        resources:
+          requests: { memory: 10Mi, cpu: "0.1" }
+          limits: { memory: 256Mi, cpu: "0.5" }
+        env:
+          - name: DB_USERNAME
+            value: <YOUR_DB_USERNAME>
+          - name: DB_PASSWORD
+            value: <YOUR_DB_PASSWORD>
+          - name: DB_NAME
+            value: <YOUR_DB_NAME>
+          - name: DB_HOST
+            value: <YOUR_DB_HOST>
+          - name: DB_DIALECT
+            value: postgres
+          - name: AWS_REGION
+            value: <YOUR_AWS_REGION>
+          - name: AWS_PROFILE
+            value: DOCKER
+          - name: AWS_ACCESS_KEY_ID
+            value: <YOUR_AWS_ACCESS_KEY_ID>
+          - name: AWS_SECRET_ACCESS_KEY
+            value: <YOUR_AWS_SECRET_ACCESS_KEY>
+          - name: AWS_MEDIA_BUCKET
+            value: <YOUR_AWS_MEDIA_BUCKET>
+          - name: CLIENTS_URLS
+            value: "*"
+          - name: JWT_SECRET
+            value: <YOUR_JWT_SECRET>
+          - name: PORT
+            value: "3000"
+          - name: FORCE_DEPLOY
+            value: "1"
+        livenessProbe:
+          httpGet:
+            path: "/"
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 60
+        readinessProbe:
+          httpGet:
+            path: "/"
+            port: 3000
+          initialDelaySeconds: 3

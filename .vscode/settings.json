@@ -1,0 +1,9 @@
+{
+    "eslint.alwaysShowStatus": true,
+    "eslint.format.enable": true,
+    "cSpell.words": [
+        "postgres",
+        "udagram",
+        "udagramgaviridev"
+    ]
+}
