@@ -7,6 +7,5 @@ WORKDIR /usr/feed/app
 COPY --chown=node:node ["package.json", "package-lock.json", ".npmrc", "./"]
 RUN npm ci --production && mv node_modules ../ && npm cache clean --force
 COPY --chown=node:node ./www ./src
-ENV PORT=8080
-EXPOSE 8080
+EXPOSE ${PORT}
 ENTRYPOINT ["node", "src/server.js"]

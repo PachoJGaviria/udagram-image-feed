@@ -17,9 +17,11 @@ spec:
     spec:
       containers:
       - name: udagram-image-feed
-        image: fgaviria/udagram-image-feed
+        image: fgaviria/udagram-image-feed:latest
+        imagePullPolicy: Always
         ports:
-        - containerPort: 8080
+        - protocol: TCP
+          containerPort: 3000
         resources:
           requests: { memory: 10Mi, cpu: "0.1" }
           limits: { memory: 256Mi, cpu: "0.5" }
@@ -49,15 +51,17 @@ spec:
           - name: JWT_SECRET
             value: <YOUR_JWT_SECRET>
           - name: PORT
-            value: "8080"
+            value: "3000"
+          - name: FORCE_DEPLOY
+            value: "1"
         livenessProbe:
           httpGet:
             path: "/"
-            port: 8080
+            port: 3000
           initialDelaySeconds: 3
-          periodSeconds: 5
+          periodSeconds: 60
         readinessProbe:
           httpGet:
             path: "/"
-            port: 8080
+            port: 3000
           initialDelaySeconds: 3
